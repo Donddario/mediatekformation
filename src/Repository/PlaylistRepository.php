@@ -16,65 +16,78 @@ class PlaylistRepository extends ServiceEntityRepository
         parent::__construct($registry, Playlist::class);
     }
 
+    /**
+     * Ajoute une entité Playlist à la base de données.
+     *
+     * @param Playlist $entity
+     */
     public function add(Playlist $entity): void
     {
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($entity);
+        $entityManager->flush();
     }
 
+    /**
+     * Supprime une entité Playlist de la base de données.
+     *
+     * @param Playlist $entity
+     */
     public function remove(Playlist $entity): void
     {
-        $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush();
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($entity);
+        $entityManager->flush();
     }
-    
+
     /**
-     * Retourne toutes les playlists triées sur le nom de la playlist
-     * @param type $champ
-     * @param type $ordre
+     * Retourne toutes les playlists triées par le nom.
+     *
+     * @param string $ordre
      * @return Playlist[]
      */
-    public function findAllOrderByName($ordre): array{
+    public function findAllOrderByName(string $ordre): array
+    {
         return $this->createQueryBuilder('p')
-                ->leftjoin('p.formations', 'f')
-                ->groupBy('p.id')
-                ->orderBy('p.name', $ordre)
-                ->getQuery()
-                ->getResult();       
-    } 
-	
+            ->leftJoin('p.formations', 'f')
+            ->groupBy('p.id')
+            ->orderBy('p.name', $ordre)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+
     /**
-     * Enregistrements dont un champ contient une valeur
-     * ou tous les enregistrements si la valeur est vide
-     * @param type $champ
-     * @param type $valeur
-     * @param type $table si $champ dans une autre table
+     * Retourne les playlists contenant une valeur dans un champ spécifique.
+     * Si aucune valeur n'est donnée, retourne toutes les playlists triées.
+     *
+     * @param string $champ
+     * @param string $valeur
+     * @param string $table
      * @return Playlist[]
      */
-    public function findByContainValue($champ, $valeur, $table=""): array{
-        if($valeur==""){
+    public function findByContainValue(string $champ, string $valeur, string $table = ""): array
+    {
+        if ($valeur === "") {
             return $this->findAllOrderByName('ASC');
-        }    
-        if($table==""){      
-            return $this->createQueryBuilder('p')
-                    ->leftjoin('p.formations', 'f')
-                    ->where('p.'.$champ.' LIKE :valeur')
-                    ->setParameter('valeur', '%'.$valeur.'%')
-                    ->groupBy('p.id')
-                    ->orderBy('p.name', 'ASC')
-                    ->getQuery()
-                    ->getResult();              
-        }else{   
-            return $this->createQueryBuilder('p')
-                    ->leftjoin('p.formations', 'f')
-                    ->leftjoin('f.categories', 'c')
-                    ->where('c.'.$champ.' LIKE :valeur')
-                    ->setParameter('valeur', '%'.$valeur.'%')
-                    ->groupBy('p.id')
-                    ->orderBy('p.name', 'ASC')
-                    ->getQuery()
-                    ->getResult();              
-        }           
-    }    
-    
+        }
+
+        $queryBuilder = $this->createQueryBuilder('p')
+            ->leftJoin('p.formations', 'f')
+            ->groupBy('p.id')
+            ->orderBy('p.name', 'ASC');
+
+        if ($table === "") {
+            $queryBuilder->where("p.$champ LIKE :valeur");
+        } else {
+            $queryBuilder->leftJoin('f.categories', 'c')
+                ->where("c.$champ LIKE :valeur");
+        }
+
+        return $queryBuilder
+            ->setParameter('valeur', "%$valeur%")
+            ->getQuery()
+            ->getResult();
+    }
 }

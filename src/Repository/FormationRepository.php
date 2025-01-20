@@ -16,96 +16,114 @@ class FormationRepository extends ServiceEntityRepository
         parent::__construct($registry, Formation::class);
     }
 
+    /**
+     * Ajoute une entité Formation à la base de données.
+     *
+     * @param Formation $entity
+     */
     public function add(Formation $entity): void
     {
-        $this->getEntityManager()->persist($entity);
-        $this->getEntityManager()->flush();
+        $entityManager = $this->getEntityManager();
+        $entityManager->persist($entity);
+        $entityManager->flush();
     }
 
+    /**
+     * Supprime une entité Formation de la base de données.
+     *
+     * @param Formation $entity
+     */
     public function remove(Formation $entity): void
     {
-        $this->getEntityManager()->remove($entity);
-        $this->getEntityManager()->flush();
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($entity);
+        $entityManager->flush();
     }
 
     /**
-     * Retourne toutes les formations triées sur un champ
-     * @param type $champ
-     * @param type $ordre
-     * @param type $table si $champ dans une autre table
+     * Retourne toutes les formations triées sur un champ.
+     *
+     * @param string $champ
+     * @param string $ordre
+     * @param string $table Si le champ est dans une autre table
      * @return Formation[]
      */
-    public function findAllOrderBy($champ, $ordre, $table=""): array{
-        if($table==""){
+    public function findAllOrderBy(string $champ, string $ordre, string $table = ""): array
+    {
+        if ($table === "") {
             return $this->createQueryBuilder('f')
-                    ->orderBy('f.'.$champ, $ordre)
-                    ->getQuery()
-                    ->getResult();
-        }else{
-            return $this->createQueryBuilder('f')
-                    ->join('f.'.$table, 't')
-                    ->orderBy('t.'.$champ, $ordre)
-                    ->getQuery()
-                    ->getResult();            
-        }
-    }
-
-    /**
-     * Enregistrements dont un champ contient une valeur
-     * ou tous les enregistrements si la valeur est vide
-     * @param type $champ
-     * @param type $valeur
-     * @param type $table si $champ dans une autre table
-     * @return Formation[]
-     */
-    public function findByContainValue($champ, $valeur, $table=""): array{
-        if($valeur==""){
-            return $this->findAll();
-        }
-        if($table==""){
-            return $this->createQueryBuilder('f')
-                    ->where('f.'.$champ.' LIKE :valeur')
-                    ->orderBy('f.publishedAt', 'DESC')
-                    ->setParameter('valeur', '%'.$valeur.'%')
-                    ->getQuery()
-                    ->getResult();            
-        }else{
-            return $this->createQueryBuilder('f')
-                    ->join('f.'.$table, 't')                    
-                    ->where('t.'.$champ.' LIKE :valeur')
-                    ->orderBy('f.publishedAt', 'DESC')
-                    ->setParameter('valeur', '%'.$valeur.'%')
-                    ->getQuery()
-                    ->getResult();                   
-        }       
-    }    
-    
-    /**
-     * Retourne les n formations les plus récentes
-     * @param type $nb
-     * @return Formation[]
-     */
-    public function findAllLasted($nb) : array {
-        return $this->createQueryBuilder('f')
-                ->orderBy('f.publishedAt', 'DESC')
-                ->setMaxResults($nb)     
+                ->orderBy('f.' . $champ, $ordre)
                 ->getQuery()
                 ->getResult();
-    }    
-    
-    /**
-     * Retourne la liste des formations d'une playlist
-     * @param type $idPlaylist
-     * @return array
-     */
-    public function findAllForOnePlaylist($idPlaylist): array{
-        return $this->createQueryBuilder('f')
-                ->join('f.playlist', 'p')
-                ->where('p.id=:id')
-                ->setParameter('id', $idPlaylist)
-                ->orderBy('f.publishedAt', 'ASC')   
+        } else {
+            return $this->createQueryBuilder('f')
+                ->join('f.' . $table, 't')
+                ->orderBy('t.' . $champ, $ordre)
                 ->getQuery()
-                ->getResult();        
+                ->getResult();
+        }
     }
-    
+
+    /**
+     * Retourne les enregistrements dont un champ contient une valeur,
+     * ou tous les enregistrements si la valeur est vide.
+     *
+     * @param string $champ
+     * @param string $valeur
+     * @param string $table Si le champ est dans une autre table
+     * @return Formation[]
+     */
+    public function findByContainValue(string $champ, string $valeur, string $table = ""): array
+    {
+        if ($valeur === "") {
+            return $this->findAll();
+        }
+
+        $queryBuilder = $this->createQueryBuilder('f')
+            ->orderBy('f.publishedAt', 'DESC');
+
+        if ($table === "") {
+            $queryBuilder->where('f.' . $champ . ' LIKE :valeur');
+        } else {
+            $queryBuilder->join('f.' . $table, 't')
+                ->where('t.' . $champ . ' LIKE :valeur');
+        }
+
+        return $queryBuilder
+            ->setParameter('valeur', '%' . $valeur . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Retourne les n formations les plus récentes.
+     *
+     * @param int $nb
+     * @return Formation[]
+     */
+    public function findAllLasted(int $nb): array
+    {
+        return $this->createQueryBuilder('f')
+            ->orderBy('f.publishedAt', 'DESC')
+            ->setMaxResults($nb)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * Retourne la liste des formations d'une playlist.
+     *
+     * @param int $idPlaylist
+     * @return Formation[]
+     */
+    public function findAllForOnePlaylist(int $idPlaylist): array
+    {
+        return $this->createQueryBuilder('f')
+            ->join('f.playlist', 'p')
+            ->where('p.id = :id')
+            ->setParameter('id', $idPlaylist)
+            ->orderBy('f.publishedAt', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
