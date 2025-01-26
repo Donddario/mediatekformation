@@ -39,6 +39,24 @@ class PlaylistRepository extends ServiceEntityRepository
         $entityManager->remove($entity);
         $entityManager->flush();
     }
+    
+    /**
+    * Retourne les playlists triées par le nombre de formations.
+    *
+    * @param string $ordre
+    * @return Playlist[]
+    */
+    public function findAllOrderByFormationCount(string $ordre): array
+    {
+        return $this->createQueryBuilder('p')
+            ->select('p', 'COUNT(f) as HIDDEN formationCount')
+            ->leftJoin('p.formations', 'f')
+            ->groupBy('p.id')
+            ->orderBy('formationCount', $ordre)
+            ->getQuery()
+            ->getResult();
+    }
+
 
     /**
      * Retourne toutes les playlists triées par le nom.
