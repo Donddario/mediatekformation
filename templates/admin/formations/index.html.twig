@@ -1,0 +1,61 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Formation
+                <a href="{{ path('admin_formations_sort', {champ:'title', ordre:'ASC'}) }}" class="btn btn-info btn-sm"><</a>
+                <a href="{{ path('admin_formations_sort', {champ:'title', ordre:'DESC'}) }}" class="btn btn-info btn-sm">></a>
+                <form method="POST" action="{{ path('admin_formations_filter', {champ:'title'}) }}">
+                    <input type="text" name="recherche" value="{% if valeur|default and not table|default %}{{ valeur }}{% endif %}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('filtre_title') }}">
+                    <button type="submit" class="btn btn-info btn-sm">Filtrer</button>
+                </form>
+            </th>
+            <th>
+                Playlist
+                <a href="{{ path('admin_formations_sort', {table:'playlist', champ:'name', ordre:'ASC'}) }}" class="btn btn-info btn-sm"><</a>
+                <a href="{{ path('admin_formations_sort', {table:'playlist', champ:'name', ordre:'DESC'}) }}" class="btn btn-info btn-sm">></a>
+                <form method="POST" action="{{ path('admin_formations_filter', {champ:'name', table:'playlist'}) }}">
+                    <input type="text" name="recherche" value="{% if valeur|default and table|default and table=='playlist' %}{{ valeur }}{% endif %}">
+                    <input type="hidden" name="_token" value="{{ csrf_token('filtre_name') }}">
+                    <button type="submit" class="btn btn-info btn-sm">Filtrer</button>
+                </form>
+            </th>
+            <th>
+                Catégories
+                <form method="POST" action="{{ path('admin_formations_filter', {champ:'id', table:'categories'}) }}">
+                    <select name="recherche" onchange="this.form.submit()">
+                        <option value=""></option>
+                        {% for categorie in categories %}
+                            <option {% if valeur|default and valeur==categorie.id %} selected {% endif %} value="{{ categorie.id }}">{{ categorie.name }}</option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </th>
+            <th>
+                Date
+                <a href="{{ path('admin_formations_sort', {champ:'publishedAt', ordre:'ASC'}) }}" class="btn btn-info btn-sm"><</a>
+                <a href="{{ path('admin_formations_sort', {champ:'publishedAt', ordre:'DESC'}) }}" class="btn btn-info btn-sm">></a>
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for formation in formations %}
+            <tr>
+                <td>{{ formation.title }}</td>
+                <td>{{ formation.playlist.name }}</td>
+                <td>
+                    {% for categorie in formation.categories %}
+                        {{ categorie.name }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>{{ formation.publishedAt ? formation.publishedAt|date('d/m/Y') : 'Non définie' }}</td>
+                <td>
+                    <a href="{{ path('admin_formations_edit', { id: formation.id }) }}" class="btn btn-warning">Modifier</a>
+                    <a href="{{ path('admin_formations_delete', { id: formation.id }) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr ?');">Supprimer</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>

@@ -1,0 +1,36 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <h2>{% if form.vars.value.id %}Modifier{% else %}Ajouter{% endif %} une formation</h2>
+    
+    {{ form_start(form) }}
+        <div class="mb-3">
+            {{ form_label(form.title) }}
+            {{ form_widget(form.title, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.description) }}
+            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.videoId) }}
+            {{ form_widget(form.videoId, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.publishedAt) }}
+            {{ form_widget(form.publishedAt, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.playlist) }}
+            {{ form_widget(form.playlist, {'attr': {'class': 'form-control'}}) }}
+        </div>
+        <div class="mb-3">
+            {{ form_label(form.categories) }}
+            {{ form_widget(form.categories, {'attr': {'class': 'form-control'}}) }}
+
+        </div>
+        <button type="submit" class="btn btn-success">Enregistrer</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('admin_formations_index') }}" class="btn btn-secondary mt-3">Retour</a>
+{% endblock %}
