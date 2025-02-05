@@ -1,0 +1,65 @@
+{# templates/admin/formations/modifier.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajouter une Formation{% endblock %}
+
+{% block body %}
+    <div class="card mt-5 w-75 mx-auto">
+        <div class="card-header">
+            <h1 class="text-center">Ajouter une Formation</h1>
+        </div>
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.title, 'Titre') }}
+                    {{ form_widget(form.title, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.publishedAt, 'Date de Publication') }}
+                    {{ form_widget(form.publishedAt, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ form_label(form.description, 'Description') }}
+                    {{ form_widget(form.description, { 'attr': {'class': 'form-control', 'rows': 4} }) }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.playlist, 'Playlist') }}
+                    {{ form_widget(form.playlist, { 'attr': {'class': 'form-select'} }) }}
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.categories, 'Catégories') }}
+                    {{ form_widget(form.categories, { 'attr': {'class': 'form-select', 'size': '4'} }) }}
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ form_label(form.videoId, 'ID de la Vidéo YouTube') }}
+                    {{ form_widget(form.videoId, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+
+            <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-primary" style="margin-right: 1rem;">Ajouter</button>
+                <a class="btn btn-secondary" href="{{ path('admin.formations.index') }}">Retour</a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
