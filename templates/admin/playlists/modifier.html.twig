@@ -1,0 +1,39 @@
+{# admin/playlists/modifier.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Modifier une Formation{% endblock %}
+
+{% block body %}
+    <div class="card mt-5 w-75 mx-auto">
+        <div class="card-header">
+            <h1 class="text-center">Modifier une Playlist</h1>
+        </div>
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'class': 'row g-3'}}) }}
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    {{ form_label(form.name, 'Nom') }}
+                    {{ form_widget(form.name, { 'attr': {'class': 'form-control'} }) }}
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    {{ form_label(form.description, 'Description') }}
+                    {{ form_widget(form.description, { 'attr': {'class': 'form-control', 'rows': 4} }) }}
+                </div>
+            </div> 
+
+            <div class="col-12 text-center mt-4">
+                <button type="submit" class="btn btn-primary" style="margin-right: 1rem;">Modifier</button>
+                <a class="btn btn-secondary" href="{{ path('admin.playlists.index') }}">Retour</a>
+            </div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+

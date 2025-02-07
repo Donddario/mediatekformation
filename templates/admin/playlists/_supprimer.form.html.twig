@@ -1,0 +1,7 @@
+{# _supprimer/form.html.twig #}
+
+<form method="post" action="{{ path('admin.playlists.supprimer', {id: playlist.id}) }}" style="display:inline-block;" 
+      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer la formation : {{playlist.name}} ?');">
+      <input type="hidden" name="_token" value="{{ csrf_token('supprimer' ~ playlist.id) }}">
+      <button class="btn btn-danger btn-sm">Supprimer</button>
+</form>

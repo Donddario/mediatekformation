@@ -33,9 +33,7 @@ class FormationType extends AbstractType
             ->add('publishedAt', DateType::class, [
                 'label' => 'Date de Publication',
                 'widget' => 'single_text',
-                'constraints' => [
-                    new LessThanOrEqual('today'),
-                ],
+                'required' => true,
             ])
             // Playlist
             ->add('playlist', EntityType::class, [

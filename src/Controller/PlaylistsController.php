@@ -26,6 +26,16 @@ class PlaylistsController extends AbstractController
      * Template pour la page d'une playlist spécifique.
      */
     private const TEMPLATE_PLAYLIST = 'pages/playlist.html.twig';
+    
+    /**
+     * Template pour la page des playlists.
+     */
+    private const TEMPLATE_ADMIN_PLAYLISTS = 'admin/playlists/index.html.twig';
+    
+    /**
+     * Template pour la page des playlists.
+     */
+    private const TEMPLATE_ADMIN_PLAYLIST = 'admin/playlists/playlist.html.twig';
 
     /**
      * Repository pour les playlists.
@@ -66,6 +76,7 @@ class PlaylistsController extends AbstractController
     }
 
     #[Route('/playlists', name: 'playlists')]
+    
     public function index(): Response
     {
         $playlists = $this->playlistRepository->findAllOrderByName('ASC');
@@ -78,7 +89,9 @@ class PlaylistsController extends AbstractController
     }
 
     #[Route('/playlists/tri/{champ}/{ordre}', name: 'playlists.sort')]
-    public function sort(string $champ, string $ordre): Response
+    #[Route('/admin/playlists/tri/{champ}/{ordre}', name: 'admin.playlists.sort')]
+    
+    public function sort(Request $request, string $champ, string $ordre): Response
     {
         if ($champ === 'name') {
             $playlists = $this->playlistRepository->findAllOrderByName($ordre);
@@ -89,21 +102,41 @@ class PlaylistsController extends AbstractController
         }
 
         $categories = $this->categorieRepository->findAll();
+        
+        if ($request->get('_route') === 'playlists.sort') {
+            
+            return $this->render(self::TEMPLATE_PLAYLISTS, [
+            'playlists' => $playlists,
+            'categories' => $categories,
+        ]);
+        }
 
-        return $this->render(self::TEMPLATE_PLAYLISTS, [
+        return $this->render(self::TEMPLATE_ADMIN_PLAYLISTS, [
             'playlists' => $playlists,
             'categories' => $categories,
         ]);
     }
 
     #[Route('/playlists/recherche/{champ}/{table}', name: 'playlists.findallcontain')]
+    #[Route('/admin/playlists/recherche/{champ}/{table}', name: 'admin.playlists.findallcontain')]
+    
     public function findAllContain(string $champ, Request $request, string $table = ""): Response
     {
         $valeur = $request->get('recherche');
         $playlists = $this->playlistRepository->findByContainValue($champ, $valeur, $table);
         $categories = $this->categorieRepository->findAll();
+        
+        if ($request->get('_route') === 'playlists.findallcontain') {
+            
+            return $this->render(self::TEMPLATE_PLAYLISTS, [
+            'playlists' => $playlists,
+            'categories' => $categories,
+            'valeur' => $valeur,
+            'table' => $table,
+        ]);
+        }
 
-        return $this->render(self::TEMPLATE_PLAYLISTS, [
+        return $this->render(self::TEMPLATE_ADMIN_PLAYLISTS, [
             'playlists' => $playlists,
             'categories' => $categories,
             'valeur' => $valeur,
@@ -112,13 +145,24 @@ class PlaylistsController extends AbstractController
     }
 
     #[Route('/playlists/playlist/{id}', name: 'playlists.showone')]
-    public function showOne(int $id): Response
+    #[Route('/admin/playlists/playlist/{id}', name: 'admin.playlists.showone')]
+    
+    public function showOne(int $id, Request $request): Response
     {
         $playlist = $this->playlistRepository->find($id);
         $playlistCategories = $this->categorieRepository->findAllForOnePlaylist($id);
         $playlistFormations = $this->formationRepository->findAllForOnePlaylist($id);
+        
+        if ($request->get('_route') === 'playlists.showone') {
+            
+            return $this->render(self::TEMPLATE_PLAYLIST, [
+            'playlist' => $playlist,
+            'playlistcategories' => $playlistCategories,
+            'playlistformations' => $playlistFormations,
+            ]);
+        }
 
-        return $this->render(self::TEMPLATE_PLAYLIST, [
+        return $this->render(self::TEMPLATE_ADMIN_PLAYLIST, [
             'playlist' => $playlist,
             'playlistcategories' => $playlistCategories,
             'playlistformations' => $playlistFormations,

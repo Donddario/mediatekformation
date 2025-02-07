@@ -63,30 +63,37 @@ class AdminFormationsController extends AbstractController
     }
 
     /**
-     * Ajouter une nouvelle formation.
-     *
-     * @param Request $request
-     * @return Response
-     */
-    #[Route('/ajouter', name: 'ajouter')]
-    public function ajouter(Request $request, FormationRepository $formationRepository): Response
-    {
+    * Ajouter une nouvelle formation.
+    *
+    * @param Request $request
+    * @param FormationRepository $formationRepository
+    * @return Response
+    */
+   #[Route('/ajouter', name: 'ajouter')]
+   public function ajouter(Request $request, FormationRepository $formationRepository): Response
+   {
         $formation = new Formation();
         $form = $this->createForm(FormationType::class, $formation);
         $form->handleRequest($request);
-               
-        if ($form->isSubmitted() && $form->isValid()) {
-            // On vérifie si la date est conforme
-            if ($formation->getPublishedAt() > new \DateTime()) {
-                $this->addFlash('error', 'Erreur : La date de publication ne peut être postérieure à aujourd\'hui.');
-            } else {
-                $this->entityManager->persist($formation);
-                $this->entityManager->flush();
 
-                $this->addFlash('success', 'La formation a été ajoutée avec succès.');
-
-                return $this->redirectToRoute('admin.formations.index');
+        if ($form->isSubmitted() && !$form->isValid()) {
+            // Récupérer les erreurs du formulaire en cas de mauvaise date
+            $errors = [];
+            foreach ($form->getErrors(true) as $error) {
+                $errors[] = $error->getMessage();
             }
+
+            // Stocker l'erreur dans un message flash pour coté client
+            $this->addFlash('error', implode("\n", $errors));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($formation);
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'La formation "' . $formation->getTitle() . '" a été ajoutée.');
+
+            return $this->redirectToRoute('admin.formations.index');
         }
 
         return $this->render('admin/formations/ajouter.html.twig', [
@@ -94,11 +101,13 @@ class AdminFormationsController extends AbstractController
         ]);
     }
 
+
     /**
      * Modifier une formation existante.
      *
      * @param Request $request
      * @param Formation $formation
+     * @param FormationRepository $formationRepository
      * @return Response
      */
     #[Route('/modifier/{id}', name: 'modifier')]
@@ -106,18 +115,25 @@ class AdminFormationsController extends AbstractController
     {
         $form = $this->createForm(FormationType::class, $formation);
         $form->handleRequest($request);
-        
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Validation de la date
-            if ($formation->getPublishedAt() > new \DateTime()) {
-                $this->addFlash('error', 'Erreur : La date de publication ne peut être postérieure à aujourd\'hui.');
-            } else {
-                $this->entityManager->flush();
 
-                $this->addFlash('success', 'La formation a été modifiée avec succès.');
-
-                return $this->redirectToRoute('admin.formations.index');
+        if ($form->isSubmitted() && !$form->isValid()) {
+            // Récupérer les erreurs du formulaire en cas de mauvaise date
+            $errors = [];
+            foreach ($form->getErrors(true) as $error) {
+                $errors[] = $error->getMessage();
             }
+
+            // Stocker l'erreur dans un message flash pour coté client
+            $this->addFlash('error', implode("\n", $errors));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            
+            $this->entityManager->flush();
+
+            $this->addFlash('success', 'La formation "' . $formation->getTitle() . '" a été modifiée.');
+
+            return $this->redirectToRoute('admin.formations.index');
         }
 
         return $this->render('admin/formations/modifier.html.twig', [
@@ -131,6 +147,7 @@ class AdminFormationsController extends AbstractController
      *
      * @param Request $request
      * @param Formation $formation
+     * @param FormationRepository $formationRepository
      * @return Response
      */
     #[Route('/supprimer/{id}', name: 'supprimer', methods: ['POST'])]
@@ -145,9 +162,10 @@ class AdminFormationsController extends AbstractController
             $this->entityManager->remove($formation);
             $this->entityManager->flush();
 
-            $this->addFlash('success', 'Formation supprimée.');
+            $this->addFlash('success', 'Formation "'.$formation->getTitle().'" supprimée.');
         }
 
         return $this->redirectToRoute('admin.formations.index');
     }
+    
 }

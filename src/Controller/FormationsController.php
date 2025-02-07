@@ -129,13 +129,13 @@ class FormationsController extends AbstractController
     {
         $formation = $this->formationRepository->find($id);
 
-        if ($request->get('_route') === 'admin.formations.showone') {
-            return $this->render(self::TEMPLATE_ADMIN_FORMATION, [
+        if ($request->get('_route') === 'formations.showone') {
+            return $this->render(self::TEMPLATE_FORMATION, [
             'formation' => $formation,
             ]);
         }
         
-        return $this->render(self::TEMPLATE_FORMATION, [
+        return $this->render(self::TEMPLATE_ADMIN_FORMATION, [
             'formation' => $formation,
         ]);
     }
