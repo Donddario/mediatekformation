@@ -27,19 +27,7 @@
             </div>
         </nav>
     </div>
-    {# Gestion des alertes Flash #}
-    {% for label, messages in app.flashes %}
-        {% for message in messages %}
-            <script>
-                Swal.fire({
-                    icon: '{{ label == "success" ? "success" : "error" }}',
-                    title: '{{ label == "success" ? "Succès" : "Erreur" }}',
-                    text: '{{ message|escape("js") }}',
-                    confirmButtonText: 'OK'
-                });
-            </script>
-        {% endfor %}
-    {% endfor %}
+    
 {% endblock %}
 {% block body %}{% endblock %}
 {% block footer %}
@@ -53,7 +41,5 @@
         </footer>
     </div>
 {% endblock %}
-{# Ajout de SweetAlert2 #}
-{% block javascripts %}
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-{% endblock %}
+
+{% block javascripts %}{% endblock %}

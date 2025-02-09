@@ -1,0 +1,15 @@
+{# templates/flashalerts.html.twig #}
+
+{# Gestion des alertes Flash #}
+    {% for label, messages in app.flashes %}
+        {% for message in messages %}
+            <script>
+                Swal.fire({
+                    icon: '{{ label == "success" ? "success" : "error" }}',
+                    title: '{{ label == "success" ? "Succès" : "Erreur" }}',
+                    text: '{{ message|escape("js") }}',
+                    confirmButtonText: 'OK'
+                });
+            </script>
+        {% endfor %}
+    {% endfor %}

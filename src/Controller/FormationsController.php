@@ -104,7 +104,7 @@ class FormationsController extends AbstractController
         $formations = $this->formationRepository->findByContainValue($champ, $valeur, $table);
         $categories = $this->categorieRepository->findAll();
 
-        if ($request->get('_route') === 'admin.formation.findallcontain') {
+        if ($request->get('_route') === 'admin.formations.findallcontain') {
             
             return $this->render(self::TEMPLATE_ADMIN_FORMATIONS, [
             'formations' => $formations,

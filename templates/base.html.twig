@@ -10,6 +10,11 @@
         {% block javascripts %}{% endblock %}
     </head>
     <body>
+        <div class="container text-end">
+            {% if app.user %}
+                <a href=" {{ path ('logout') }}">Déconnexion</a>
+            {% endif %}
+        </div>
         <!-- entête -->
         {% block top %}{% endblock %}
         <!-- corps -->

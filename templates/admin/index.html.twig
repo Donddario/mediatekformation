@@ -1,0 +1,19 @@
+{# templates/admin/dashboard.html.twig #}
+{% extends 'baseadmin.html.twig' %}
+
+{% block title %}Backoffice - Tableau de Bord{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1>Tableau de Bord - Administration</h1>
+    &nbsp;
+
+    <div class="list-group">
+        <a href="{{ path('admin.formations.index') }}" class="list-group-item list-group-item-action">Gérer les Formations</a>
+        &nbsp;
+        <a href="{{ path('admin.playlists.index') }}" class="list-group-item list-group-item-action">Gérer les Playlists</a>
+        &nbsp;
+        <a href="{{ path('admin.categories.index') }}" class="list-group-item list-group-item-action">Gérer les Catégories</a>
+    </div>
+</div>
+{% endblock %}
