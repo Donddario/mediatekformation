@@ -1,0 +1,7 @@
+{# admin/categories/supprimer.html.twig #}
+
+    <form method="post" action="{{ path('admin.categories.supprimer', {id: categorie.id}) }}" style="display:inline-block;" 
+        onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer la categorie : {{categorie.name}} ?');">
+        <input type="hidden" name="_token" value="{{ csrf_token('supprimer' ~ categorie.id) }}">
+        <button class="btn btn-danger btn-sm">Supprimer</button>
+    </form>

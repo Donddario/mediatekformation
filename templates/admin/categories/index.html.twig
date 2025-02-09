@@ -1,0 +1,50 @@
+{# admin/categories/index.html.twig #}
+
+{% extends "basefront.html.twig" %}
+{% block body %}
+    
+    <h1>Gestion des catégories</h1>
+    &nbsp;
+    &nbsp;
+    {{ include('admin/categories/_ajouter.form.html.twig') }}
+    
+    &nbsp;
+    &nbsp;
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="text-left align-top" scope="col">
+                    Catégories<br />
+                                   
+                </th>
+               
+                <th class="text-center align-top" scope="col">
+                    &nbsp;
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for categorie in categories %}
+                <tr class="align-middle">
+                    <td>
+                        <h5 class="text-info">
+                            {{ categorie.name }}
+                        </h5>
+                    </td>
+                    <td class="text-left">
+                                         
+                    </td>                    
+                  
+                    <td>
+                        <form method="post" action="{{ path('admin.categories.supprimer', {id: categorie.id}) }}" style="display:inline-block;" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer la catégorie : {{categorie.name}} ?');">
+                            <input type="hidden" name="_token" value="{{ csrf_token('supprimer' ~ categorie.id) }}">
+                            <button class="btn btn-danger btn-sm">Supprimer</button>
+                        </form>
+                    </td>
+                        
+                        
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
