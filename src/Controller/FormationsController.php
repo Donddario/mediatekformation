@@ -61,7 +61,12 @@ class FormationsController extends AbstractController
         $this->formationRepository = $formationRepository;
         $this->categorieRepository = $categorieRepository;
     }
-
+    
+    /**
+     * Liste toutes les formations avec options de tri et filtre.
+     *
+     * @return Response
+     */
     #[Route('/formations', name: 'formations')]
     public function index(): Response
     {
@@ -74,6 +79,15 @@ class FormationsController extends AbstractController
         ]);
     }
 
+    /**
+     * Trier les formations.
+     *
+     * @param Request $request
+     * @param string $champ
+     * @param string $ordre
+     * @param string $table
+     * @return Response
+     */
     #[Route('/formations/tri/{champ}/{ordre}/{table}', name: 'formations.sort')]
     #[Route('/admin/formations/tri/{champ}/{ordre}/{table}', name: 'admin.formations.sort')]
     
@@ -95,6 +109,14 @@ class FormationsController extends AbstractController
         ]);
     }
 
+    /**
+     * Rechercher une formation.
+     *
+     * @param Request $request
+     * @param string $champ
+     * @param string $table
+     * @return Response
+     */
     #[Route('/formations/recherche/{champ}/{table}', name: 'formations.findallcontain')]
     #[Route('/admin/formations/recherche/{champ}/{table}', name: 'admin.formations.findallcontain')]
             
@@ -122,6 +144,13 @@ class FormationsController extends AbstractController
         ]);
     }
 
+    /**
+     * Regarder une formation spécifique.
+     *
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
     #[Route('/formations/formation/{id}', name: 'formations.showone')]
     #[Route('/admin/formations/formation/{id}', name: 'admin.formations.showone')]
     

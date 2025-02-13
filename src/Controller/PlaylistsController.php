@@ -75,6 +75,11 @@ class PlaylistsController extends AbstractController
         $this->formationRepository = $formationRepository;
     }
 
+    /**
+     * Liste les playlists avec options de tri et filtre.
+     * 
+     * @return Response
+     */
     #[Route('/playlists', name: 'playlists')]
     
     public function index(): Response
@@ -88,6 +93,14 @@ class PlaylistsController extends AbstractController
         ]);
     }
 
+    /**
+     * Trier les playlists.
+     * 
+     * @param Request $request
+     * @param string $champ
+     * @param string $ordre
+     * @return Response
+     */
     #[Route('/playlists/tri/{champ}/{ordre}', name: 'playlists.sort')]
     #[Route('/admin/playlists/tri/{champ}/{ordre}', name: 'admin.playlists.sort')]
     
@@ -117,6 +130,14 @@ class PlaylistsController extends AbstractController
         ]);
     }
 
+    /**
+     * Rechercher une playlist.
+     * 
+     * @param string $champ
+     * @param Request $request
+     * @param string $table
+     * @return Response
+     */
     #[Route('/playlists/recherche/{champ}/{table}', name: 'playlists.findallcontain')]
     #[Route('/admin/playlists/recherche/{champ}/{table}', name: 'admin.playlists.findallcontain')]
     
@@ -144,6 +165,13 @@ class PlaylistsController extends AbstractController
         ]);
     }
 
+    /**
+     * Voir une playlist spécifique.
+     * 
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/playlists/playlist/{id}', name: 'playlists.showone')]
     #[Route('/admin/playlists/playlist/{id}', name: 'admin.playlists.showone')]
     

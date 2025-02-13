@@ -49,7 +49,6 @@ class AdminPlaylistsController extends AbstractController
         $champ = $request->query->get('champ', 'name');
         $ordre = $request->query->get('ordre', 'ASC');
 
-        //$playlists = $this->playlistRepository->findAllOrderBy($champ, $ordre);
         $categories = $this->categorieRepository->findAll();
         $playlists = $this->playlistRepository->findAll();
 
@@ -65,7 +64,7 @@ class AdminPlaylistsController extends AbstractController
      * Ajouter une nouvelle playlist.
      *
      * @param Request $request
-     * @param PlaylistRepositoryv$playlistRepository
+     * @param PlaylistRepository $playlistRepository
      * @return Response
      */
     #[Route('/ajouter', name: 'ajouter')]
@@ -94,6 +93,7 @@ class AdminPlaylistsController extends AbstractController
      *
      * @param Request $request
      * @param Playlist $playlist
+     * @param PlaylistRepository $playlistRepository
      * @return Response
      */
     #[Route('/modifier/{id}', name: 'modifier')]
@@ -121,6 +121,7 @@ class AdminPlaylistsController extends AbstractController
      *
      * @param Request $request
      * @param Playlist $playlist
+     * @param PlaylistRepository $playlistRepository
      * @return Response
      */
     #[Route('/supprimer/{id}', name: 'supprimer', methods: ['POST'])]
