@@ -28,6 +28,11 @@ class FormationRepositoryTest extends KernelTestCase
         $this->formationRepository = $entityManager->getRepository(Formation::class);
     }
 
+    /**
+     * Test d'ajout d'une formation
+     * 
+     * @return void
+     */
     public function testAddFormation(): void
     {
         $formation = new Formation();
@@ -41,6 +46,11 @@ class FormationRepositoryTest extends KernelTestCase
         $this->assertEquals('Test Formation', $savedFormation->getTitle());
     }
 
+    /**
+     * Test de suppression d'une formation
+     * 
+     * @return void
+     */
     public function testRemoveFormation(): void
     {
         $formation = new Formation();
@@ -54,6 +64,11 @@ class FormationRepositoryTest extends KernelTestCase
         $this->assertNull($deletedFormation);
     }
 
+    /**
+     * Liste toutes les formations selon le titre en ASC
+     * 
+     * @return void
+     */
     public function testFindAllOrderBy(): void
     {
         $formations = $this->formationRepository->findAllOrderBy('title', 'ASC');
@@ -61,6 +76,11 @@ class FormationRepositoryTest extends KernelTestCase
         $this->assertNotEmpty($formations);
     }
 
+    /**
+     * Test sur la recherche d'une formation par un titre
+     * 
+     * @return void
+     */
     public function testFindByContainValue(): void
     {
         $formations = $this->formationRepository->findByContainValue('title', 'Test');
@@ -70,6 +90,11 @@ class FormationRepositoryTest extends KernelTestCase
         }
     }
 
+    /**
+     * Vérifie que la méthode retourne un tableau de 3 formations
+     * 
+     * @return void
+     */
     public function testFindAllLasted(): void
     {
         $formations = $this->formationRepository->findAllLasted(3);
@@ -77,6 +102,11 @@ class FormationRepositoryTest extends KernelTestCase
         $this->assertLessThanOrEqual(3, count($formations));
     }
 
+    /**
+     * Test si la méthode renvoi un tableau des formations pour une playlist spécifique
+     * 
+     * @return void
+     */
     public function testFindAllForOnePlaylist(): void
     {
         $formations = $this->formationRepository->findAllForOnePlaylist(1);

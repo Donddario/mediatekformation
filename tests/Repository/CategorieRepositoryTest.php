@@ -28,7 +28,12 @@ class CategorieRepositoryTest extends KernelTestCase
         $entityManager = self::getContainer()->get('doctrine')->getManager();
         $this->categorieRepository = $entityManager->getRepository(Categorie::class);
     }
-
+    
+    /**
+     * Test d'ajout d'une catégorie
+     * 
+     * @return void
+     */
     public function testAddCategorie(): void
     {
         $categorie = new Categorie();
@@ -41,6 +46,11 @@ class CategorieRepositoryTest extends KernelTestCase
         $this->assertEquals('test catégorie', $savedCategorie->getName());
     }
 
+    /**
+     * Test de suppression d'une catégorie
+     * 
+     * @return void
+     */
     public function testRemoveCategorie(): void
     {
         $categorie = new Categorie();
@@ -53,6 +63,12 @@ class CategorieRepositoryTest extends KernelTestCase
         $this->assertNull($deletedCategorie);
     }
 
+    /**
+     * Test pour retourner les catégories
+     * 
+     * @return void
+     * 
+     */
     public function testFindAllForOnePlaylist(): void
     {
         $categories = $this->categorieRepository->findAllForOnePlaylist(1);

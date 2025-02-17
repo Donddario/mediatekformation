@@ -50,7 +50,7 @@ class AdminPlaylistsController extends AbstractController
         $ordre = $request->query->get('ordre', 'ASC');
 
         $categories = $this->categorieRepository->findAll();
-        $playlists = $this->playlistRepository->findAll();
+        $playlists = $this->playlistRepository->findAllOrderByName('ASC');
 
         return $this->render('admin/playlists/index.html.twig', [
             'playlists' => $playlists,

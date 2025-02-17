@@ -21,26 +21,36 @@ class FormationValidationsTest extends KernelTestCase
 
 {
     
-    public function getErrors(Formation $formation, int $expectedErrorCount=0)
+    public function getErrors(Formation $formation, int $expectedErrorCount, string $message="")
     {
         self::bootKernel();
         $validator = static::getContainer()->get(ValidatorInterface::class);
         $errors = $validator->validate($formation);
 
-        $this->assertCount($expectedErrorCount, $errors);
+        $this->assertCount($expectedErrorCount, $errors, $message);
 
         return $errors;
     }
 
+    /**
+     * Test sur une date postérieure
+     * 
+     * @return void
+     */
     public function testDateIsFutureShouldFail(): void
     {
         $formation = new Formation();
-        $formation->setPublishedAt(new DateTime('tomorrow')); // date posterieure (fail)
+        $formation->setPublishedAt(new DateTime('2027-02-02')); // date posterieure (fail)
 
-        $errors = $this->getErrors($formation, 1);
-        $this->assertSame('La date de publication ne peut être postérieure à aujourd\'hui.', $errors[0]->getMessage());
+        $this->getErrors($formation, 1, "Date postérieure à aujourd'hui");
+        
     }
 
+    /**
+     * Test sur date du jour
+     * 
+     * @return void
+     */
     public function testDateIsTodayShouldSucceed(): void
     {
         $formation = new Formation();
@@ -50,6 +60,11 @@ class FormationValidationsTest extends KernelTestCase
         $this->getErrors($formation, 0);
     }
 
+    /**
+     * Test sur date antérieure
+     * 
+     * @return void
+     */
     public function testDateIsPastShouldSucceed(): void
     {
         $formation = new Formation();

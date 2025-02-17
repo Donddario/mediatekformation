@@ -85,5 +85,6 @@ class PlaylistControllerTest extends WebTestCase
         $this->assertEquals(Response::HTTP_OK, $response->getStatusCode());
         $uri = $client->getRequest()->server->get("REQUEST_URI");
         $this->assertEquals('/playlists/playlist/13', $uri);
+        $this->assertSelectorTextContains('h4', "Bases de la programmation (C#)");
     }
 }

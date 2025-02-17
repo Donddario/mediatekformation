@@ -16,14 +16,24 @@ use PHPUnit\Framework\TestCase;
  *
  * @author Donddario
  */
-class FormationTest extends TestCase {
-    
+class FormationTest extends TestCase 
+{
+   /**
+    * Test que la date ne retourne rien
+    * 
+    * @return void
+    */ 
     public function testGetPublishedAtStringReturnsEmptyWhenNoDate(): void
     {
         $formation = new Formation();
         $this->assertSame('', $formation->getPublishedAtString());
     }
 
+    /**
+     * Test que la date retourne quelque chose
+     * 
+     * @return void
+     */
     public function testGetPublishedAtStringReturnsFormattedDate(): void
     {
         $formation = new Formation();

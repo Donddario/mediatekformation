@@ -28,6 +28,11 @@ class PlaylistRepositoryTest extends KernelTestCase {
         $this->playlistRepository = $entityManager->getRepository(Playlist::class);
     }
 
+    /**
+     * Test sur l'ajout d'une playlist
+     * 
+     * @return void
+     */
     public function testAddPlaylist(): void
     {
         $playlist = new Playlist();
@@ -40,6 +45,11 @@ class PlaylistRepositoryTest extends KernelTestCase {
         $this->assertEquals('test playlist', $savedPlaylist->getName());
     }
 
+    /**
+     * Test sur la suppression d'une playlist
+     * 
+     * @return void
+     */
     public function testRemovePlaylist(): void
     {
         $playlist = new Playlist();
@@ -52,6 +62,11 @@ class PlaylistRepositoryTest extends KernelTestCase {
         $this->assertNull($deletedPlaylist);
     }
 
+    /**
+     * Test sur le tri par le nb de formations en DESC
+     * 
+     * @return void
+     */
     public function testFindAllOrderByFormationCount(): void
     {
         // test tri des playlists par nombre de formations
@@ -68,6 +83,11 @@ class PlaylistRepositoryTest extends KernelTestCase {
         }
     }
 
+    /**
+     * Tester si l'on trouve une playlist selon son nom
+     * 
+     * @return void
+     */
     public function testFindAllOrderByName(): void
     {
         $playlist1 = new Playlist();
@@ -97,12 +117,15 @@ class PlaylistRepositoryTest extends KernelTestCase {
         $this->assertSame("a_test", array_values($findAsc)[0]->getName());
         $this->assertSame("b_test", array_values($findAsc)[1]->getName());
 
-
-        // Nettoyage des entités après le test
         $playlistRepository->remove($playlist1);
         $playlistRepository->remove($playlist2);
     }
 
+    /**
+     * Test si l'on trouve la playlist selon une sous chaine du nom
+     * 
+     * @return void
+     */
     public function testFindByContainValue(): void
     {
         $playlist = new Playlist();

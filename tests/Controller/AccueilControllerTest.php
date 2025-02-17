@@ -11,7 +11,10 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
  */
 class AccueilControllerTest extends WebTestCase
 {
-
+    /**
+     * Test d'accès à l'index
+     * @return void
+     */
     public function testIndex(): void
     {
         $client = static::createClient();

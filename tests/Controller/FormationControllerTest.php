@@ -37,7 +37,7 @@ class FormationControllerTest extends WebTestCase
     /**
      * Filtre selon le nom de la formation recherchée
      */
-    public function testFilterFormations()
+    public function testFiltrerFormations()
     {
         $client = static::createClient();
         $client->request('GET', '/formations');
@@ -52,7 +52,7 @@ class FormationControllerTest extends WebTestCase
     /**
      * Filtre selon le nom des playlists
      */
-    public function testFiltrerPlaylist()
+    public function testFiltrerPlaylists()
     {
         $client = static::createClient();
         $client->request('GET', '/formations');
@@ -91,7 +91,7 @@ class FormationControllerTest extends WebTestCase
     /**
      * Tri sur catégories
      */
-    public function testFiltrerCategories()
+    public function testFiltrerByCategories()
     {
         $client = static::createClient();
         $client->request('GET', '/formations');
