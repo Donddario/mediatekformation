@@ -3,7 +3,7 @@
 Ce site, développé avec Symfony 6.4, permet d'accéder aux vidéos d'auto-formation proposées par une chaîne de médiathèques et qui sont aussi accessibles sur YouTube.<br>
 La version ayant servi de base à la réalisation de ce projet est consultable sur le dépôt GitHub suivant : https://github.com/CNED-SLAM/mediatekformation.git
 Cette version de l'application permet d'administrer son contenu. Elle contient les fonctionnalités globales suivantes :<br>
-![img1](https://github.com/user-attachments/assets/9c5c503b-738d-40cf-ba53-36ba4c0209e8)
+<img width="308" alt="Diagramme cas d'utilisation global" src="https://github.com/user-attachments/assets/0e67bbb9-7cd2-47e7-bf1c-67672c0eeb28" />
 ## Les différentes pages
 Voici les 8 pages correspondant aux différents cas d’utilisation.
 ### Page 1 : le tableau de bord admin
